@@ -8,6 +8,7 @@ import time
 f = open('long_poem.txt', 'r', encoding='utf-8')
 in_words = open('words.txt', 'r', encoding='utf-8')
 f_out = open('snippets.txt', 'w', encoding='utf8')
+f_out2 = open('rhymes.txt', 'w', encoding='utf8')
 
 #clear_text = re.sub('[.!,-:/?")(]', '', f.read())
 
@@ -42,11 +43,16 @@ def find():
         index[word.lower()] = arr
     return index
 
+in_words_dict = {}
+for string in in_words:
+    string = string.strip('\n')
+    in_words_dict[string.split(' ')[0]] =  string.split(' ')[1]
+
 
 def start():
     f_out = open('snippets.txt', 'w', encoding='utf8')
     a = time.time()
-    for in_word in in_words:
+    for in_word in in_words_dict.values():
         for k,v in find().items():
             if in_word == k:
                 for i in v:
@@ -80,9 +86,24 @@ def second():
         for i in lines:
             f_out.write(i)
     f_out.close()
-second()
+
 
 """_______________________________________2________________________"""
 
+numerate_lines = ''
+for num, line in num_lines.items():
+    numerate_lines += str(num) + ' ' + line
 
+found_words = set()
+for n, word in in_words_dict.items():
+    word = word.strip('\n')
+    endings = re.search('.*([а-я].*?[а-я].*)', word)
+    end = endings.group(1)
+    num_word = re.findall('(\\d+)\\s.*?(\\w+' + end + ')$', numerate_lines , re.MULTILINE)
+    for number, found_word in num_word:
+        #print(number, found_word)
+        if int(number) - 2 == int(n) or int(number) - 1 == int(n) or int(number) == int(n) or int(number) + 1 == int(n) or int(number) + 2 == int(n):
+            found_words.add(found_word)
 
+for i in found_words:
+    f_out2.write(i + '\n')
