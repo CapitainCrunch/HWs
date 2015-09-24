@@ -99,11 +99,13 @@ for n, word in in_words_dict.items():
     word = word.strip('\n')
     endings = re.search('.*([а-я].*?[а-я].*)', word)
     end = endings.group(1)
+    x = time.time()
     num_word = re.findall('(\\d+)\\s.*?(\\w+' + end + ')$', numerate_lines , re.MULTILINE)
     for number, found_word in num_word:
         #print(number, found_word)
         if int(number) - 2 == int(n) or int(number) - 1 == int(n) or int(number) == int(n) or int(number) + 1 == int(n) or int(number) + 2 == int(n):
             found_words.add(found_word)
+    y = time.time()
 
 for i in found_words:
     f_out2.write(i + '\n')
