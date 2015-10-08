@@ -43,7 +43,7 @@ def download_file(url):
                 f.flush()
     return local_filename
 
-#download_file(url_dumps())
+download_file(url_dumps())
 
 
 #____________2_____________
