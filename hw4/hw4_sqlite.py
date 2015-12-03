@@ -30,41 +30,48 @@ class SQL():
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    def search_all(self):
-        query = 'SELECT * FROM freqDict'
+    def search_all(self, table):
+        query = 'SELECT * FROM {}'.format(table)
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
 
-f_in = open('./dump.xml', 'r', encoding='utf8')
-f_out = open('csv_table.csv', 'w', encoding='utf8')
-sql = SQL('freqDict.db')
-try:
-    sql.create_table()
-except:
-    pass
-regex_title = re.compile('<title>(.*?)</title>', re.DOTALL)
-regex_refs = re.compile('\\[\\[', re.DOTALL)
-regex_text = re.compile('<text.*?>(.*?)</text>')
+def first():
+    f_in = open('./dump.xml', 'r', encoding='utf8')
+    f_out = open('csv_table.csv', 'w', encoding='utf8')
+    sql = SQL('freqDict.db')
+    try:
+        sql.create_table()
+    except:
+        pass
+    regex_title = re.compile('<title>(.*?)</title>', re.DOTALL)
+    regex_refs = re.compile('\\[\\[', re.DOTALL)
+    regex_text = re.compile('<text.*?>(.*?)</text>')
 
-page = ''
-for line in f_in:
-    if '<page>' in line:
+    page = ''
+    for line in f_in:
+        if '<page>' in line:
+            page += line
         page += line
-    page += line
-    if '</page>' in line:
-        page += line
-        text = regex_text.findall(page)
-        if text == []:
-            pass
-        else:
-            for word in (text[0].split(' ')):
-                if sql.check_word(word.strip('[]!\"#\'')) == []:
-                    sql.insert(word, 0)
-                else:
-                    sql.add_count(int(sql.check_word(word.strip('[]!\"#\''))[0][0]) + 1, word.strip('[]!\"#\''))
-        page = ''
-    continue
+        if '</page>' in line:
+            page += line
+            text = regex_text.findall(page)
+            if text == []:
+                pass
+            else:
+                for word in (text[0].split(' ')):
+                    if sql.check_word(word.strip('[]!\"#\'')) == []:
+                        sql.insert(word, 0)
+                    else:
+                        sql.add_count(int(sql.check_word(word.strip('[]!\"#\''))[0][0]) + 1, word.strip('[]!\"#\''))
+            page = ''
+        continue
 
-f_in.close()
-f_out.close()
+    f_in.close()
+    f_out.close()
+
+def second():
+    sql = SQL('hotels_server.db')
+    print(len(sql.search_all('booking')))
+
+second()

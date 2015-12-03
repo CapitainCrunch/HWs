@@ -102,6 +102,6 @@ data = np.vstack((anna_data, sonet_data))
 p = mlab.PCA(data, True)
 N = len(anna_data)
 
-plt.plot(p.Y[:N,0], p.Y[:N,1], 'og', p.Y[N:,0], p.Y[N:,1], 'sb')
+plt.plot(p.Y[:N,0], p.Y[:N,1], 'or', p.Y[N:,0], p.Y[N:,1], 'sb')
 plt.show()
 print(p.Wt)
