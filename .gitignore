@@ -3,3 +3,4 @@ test.py
 help/
 *.txt
 *.pyc
+.DS_Store
