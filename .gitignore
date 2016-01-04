@@ -1,6 +1,6 @@
 .idea/
 test.py
 help/
-*.txt
+.txt
 *.pyc
 .DS_Store
