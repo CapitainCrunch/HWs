@@ -31,5 +31,25 @@ print(k_table)
 
 print(gs.best_score_)
 
-# what's next?
+best = gs.best_estimator_
+
+true_examples = []
+false_examples = []
+for i in range(len(k_table)):
+    guess = best.predict(k_table[i].reshape(1, -1))
+    if guess != 0:
+        if len(false_examples) < 3:
+            false_examples.append((k_sentences[i], k_table[i]))
+    else:
+        if len(true_examples) < 3:
+            true_examples.append((k_sentences[i], k_table[i]))
+    if len(false_examples) >= 3 and len(true_examples) >= 3:
+        break
+
+print('Ошибки ')
+for i in false_examples:
+    print('   ', i[0], i[1])
+print('Верные угадки: ')
+for i in true_examples:
+    print('   ', i[0], i[1])
 
